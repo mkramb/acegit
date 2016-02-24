@@ -1,0 +1,93 @@
+{% load compress staticfiles gravatar i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="utf-8">
+        <title>AceGit</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="info@acegit.com">
+
+        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700" rel="stylesheet" type="text/css">
+
+        {% compress css %}
+            <link href="{% static 'library/bootswatch/css/bootstrap.css' %}" rel="stylesheet">
+            <link href="{% static 'library/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+            <link href="{% static 'library/animate.css/css/animate.css' %}" rel="stylesheet">
+            <link type="text/less" href="{% static "css/app.less" %}" rel="stylesheet">
+        {% endcompress %}
+
+    </head>
+    <body>
+
+        {% block header %}
+            <div class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a href="{% url 'app' %}" class="navbar-brand"><img src="{% static 'img/logo.svg' %}" alt="AceGit"></a>
+                            <button class="navbar-toggle"
+                                type="button" data-toggle="collapse" data-target="#navbar-main"
+                            >
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                    </div>
+                    <div class="navbar-collapse collapse" id="navbar-main">
+                        <ul class="nav navbar-nav">
+                            {% block navigation %}
+                                <li {% if menu_selected == 'repositories' %}class="active"{% endif %}><a href="{% url 'app' %}">
+                                    <i class="fa fa-cloud fa-lg"></i> {% trans 'Repositories' %}</a>
+                                </li>
+                                <li {% if menu_selected == 'addons' %}class="active"{% endif %}><a href="{% url 'app_addons' %}">
+                                    <i class="fa fa-puzzle-piece fa-lg"></i> {% trans 'Addons' %}</a>
+                                </li>
+                            {% endblock %}
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">
+                                    {% gravatar user.email 21 %} {{ user.username }} <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="download">
+                                    <li><a href="{% url 'app_logout' %}">
+                                        <i class="fa fa-sign-out"></i> {% trans 'Sign out' %}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        <div class="container">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+
+        {% compress js %}
+            <script src="{% static 'library/jquery/js/jquery.js' %}"></script>
+            <script src="{% static 'library/underscore/js/underscore.js' %}"></script>
+            <script src="{% static 'library/backbone/js/backbone.js' %}"></script>
+            <script src="{% static 'library/bootstrap/js/bootstrap.js' %}"></script>
+            <script src="{% static 'library/bootbox.js/js/bootbox.js' %}"></script>
+            <script src="{% static 'js/app_global.js' %}"></script>
+        {% endcompress %}
+
+        {% block scripts %}{% endblock %}
+
+        <script src="{% url 'app_catalog' %}"></script>
+
+    </body>
+</html>

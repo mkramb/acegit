@@ -1,0 +1,12 @@
+{
+  "name": "acegit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "bower": "./node_modules/.bin/bower-installer"
+  },
+  "devDependencies": {
+    "bower-installer": "^1.2.0",
+    "less": "^2.5.0"
+  }
+}

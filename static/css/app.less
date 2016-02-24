@@ -1,0 +1,77 @@
+@import 'app_home.less';
+@import 'app_detail.less';
+@import 'app_import.less';
+@import 'app_addons.less';
+
+body {
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: 13px;
+    padding: 0px;
+    margin: 0px;
+
+    & > .container {
+        margin-bottom: 30px;
+
+        button i.fa {
+            padding-right: 2px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 4px;
+        }
+
+        .description, .datetime {
+            font-size: 11px;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .messages {
+            margin-top: 20px;
+
+            button {
+              margin-top: -2px;
+            }
+        }
+    }
+}
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+
+    .navbar-brand img {
+        height: 50px;
+        margin-top: -15px;
+    }
+
+    img.gravatar {
+        border-radius: 50%;
+        margin-top: -3px;
+        margin-right: 3px;
+    }
+}
+
+.page-header {
+    padding-top: 0;
+    border-bottom: 0;
+    margin-bottom: 10px;
+    margin-top: 30px;
+
+    h3 {
+        margin-right: 10px;
+    }
+
+    .btn {
+        bottom: 15px;
+        position: relative;
+        top: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-header .btn {
+        float: left !important;
+        margin-bottom: 20px;
+    }
+}

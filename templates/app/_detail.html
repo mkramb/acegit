@@ -1,0 +1,40 @@
+{% load i18n static %}
+
+<div id="detail">
+    <form action="{% url 'app_detail' repo.slug %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="_method" value="delete">
+        <div class="page-header">
+            <ol class="breadcrumb">
+              <li><a href="{% url 'app' %}">{% trans 'Repositories' %}</a></li>
+              <li class="active">{% trans 'Detail' %}</li>
+            </ol>
+            <h3 class="pull-left">{{ repo.full_name }}</h3>
+            <button type="button" class="btn btn-default pull-right dialog-confirm"
+                data-title="{% trans 'Unlink selected repository and all connected resources?' %}">
+                {% trans 'Unlink repository' %}
+            </button>
+            <div class="clearfix"></div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li role="presentation" {% if not service_name %}class="active"{% endif %}>
+                <a href="{% url 'app_detail' repo.slug %}"><i class="fa fa-bar-chart"></i> {% trans 'Activity' %}</a>
+            </li>
+            <li role="presentation" {% if service_name %}class="active"{% endif %}>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                    <i class="fa fa-connectdevelop"></i> {% trans 'Integrations' %} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    {% for service in services %}
+                        <li {% if service_name == service.name %}class="active"{% endif %}>
+                            <a href="{% url 'app_detail' repo.slug %}{{ service.name }}/">{{ service.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li role="presentation">
+                <a href="{{ repo.html_url }}" target="_blank"><i class="fa fa-external-link"></i> {% trans 'GitHub' %}</a>
+            </li>
+        </ul>
+    </form>
+</div>

@@ -1,0 +1,59 @@
+{% extends 'app.html' %}
+{% load static i18n compress crispy_forms_tags %}
+
+{% block scripts %}
+    {% if not integration %}
+        <script src="https://api.trello.com/1/client.js?key={{ key }}"></script>
+    {% endif %}
+    {% if integration and not boards %}
+        {% compress js inline %}
+            <script>
+                $(function() {
+                    setInterval(function() {
+                        $.get("{% url 'service_trello' repo.slug %}").done(function(data) {
+                            if (data) window.location.reload();
+                        });
+                    }, 1500);
+                });
+            </script>
+        {% endcompress %}
+    {% else %}
+        {% compress js %}
+            <script src="{% static 'services/trello/trello.js' %}"></script>
+        {% endcompress %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include 'app/_detail.html' %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="_token" value="">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ service.title }}</div>
+            <div class="panel-body">
+                {% if integration and boards %}
+                    <p>
+                        {% blocktrans %}
+                            Please associate a Board with selected repository, so that
+                            we can integrate it with our system.
+                        {% endblocktrans %}
+                    </p>
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-default">{% trans 'Save' %}</button>
+                {% elif integration and not boards %}
+                    <img src="{% static 'img/oval.svg' %}">
+                {% else %}
+                    <p>
+                        {% blocktrans %}
+                            You need to link your account, so that we know where to take data from.
+                        {% endblocktrans %}
+                    </p>
+                    <button id="authenticate" class="btn btn-default">
+                        {% trans 'Open authentication page' %}
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

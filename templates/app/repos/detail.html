@@ -1,0 +1,11 @@
+{% extends 'app.html' %}
+{% load i18n static %}
+
+{% block content %}
+    <div id="detail">
+        {% include 'app/_detail.html' %}
+        <div class="alert alert-info dont-hide" role="alert">
+            {% trans 'There is no activity available at the moment.' %}
+        </div>
+    </div>
+{% endblock %}

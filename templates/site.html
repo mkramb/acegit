@@ -1,0 +1,42 @@
+{% load compress staticfiles i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    
+        <meta charset="utf-8">
+        <title>AceGit</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="info@acegit.com">
+
+        <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+        <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic" rel="stylesheet" type="text/css">
+
+        {% compress css %}      
+            <link href="{% static 'library/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+            <link href="{% static 'library/bootstrap/css/bootstrap-theme.css' %}" rel="stylesheet">
+            <link href="{% static 'library/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+            <link href="{% static 'library/animate.css/css/animate.css' %}" rel="stylesheet">
+            <link type="text/less" href="{% static "css/site.less" %}" rel="stylesheet">
+        {% endcompress %}
+
+    </head>
+    <body>
+
+        {% block intro %}{% endblock %}
+
+        <div class="container">
+            {% block content %}{% endblock %}
+            <footer>
+                <p>Copyright &copy; AceGit {% now 'Y' %}</p>
+            </footer>
+        </div>
+        
+        {% compress js %}
+            <script src="{% static 'library/jquery/js/jquery.js' %}"></script>
+            <script src="{% static 'library/underscore/js/underscore.js' %}"></script>
+            <script src="{% static 'js/site.js' %}"></script>
+        {% endcompress %}
+
+    </body>
+</html>

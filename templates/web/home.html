@@ -1,0 +1,75 @@
+{% extends 'site.html' %}
+{% load staticfiles i18n %}
+
+{% block intro %}
+    <section id="intro">
+        <div class="container">
+            <div class="col-md-12 animated bounceIn">
+                <div class="logo">
+                    <img src="{% static 'img/logo.svg' %}">
+                    <h1>{% trans "AceGit" %}</h1>
+                </div>
+                <h2>
+                    {% blocktrans %}
+                        Our mission is to delight developers with automated workflows and
+                        empower managers with detailed overview. Issues, repositories and
+                        builds as a first-class citizen.
+                    {% endblocktrans %}
+                </h2>
+                <a id="sign-in" class="btn btn-primary btn-lg" href="{% spaceless %}
+                    {% if not user.is_authenticated %}
+                        {% url 'social:begin' backend='github' %}?next={{ request.GET.next }}
+                    {% else %}
+                        {% url 'app' %}
+                    {% endif %}
+                {% endspaceless %}" role="button">
+                    <i class="fa fa-github fa-lg"></i>
+                    {% trans 'Sign In' %}
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section id="content">
+        <div class="row">
+            <div class="col-md-4 animated fadeIn">
+                <div class="title">
+                    <i class="fa fa-arrows-alt fa-2x"></i>
+                    <h4>{% trans 'Define' %}</h4>
+                </div>
+                <p>
+                    {% blocktrans %}
+                        Define a workflow and branching convention that work for you.
+                        Devs can focus on their work and follow Git best practices.
+                    {% endblocktrans %}
+                </p>
+            </div>
+            <div class="col-md-4 animated fadeIn">
+                <div class="title">
+                    <i class="fa fa-magic fa-2x"></i>
+                    <h4>{% trans 'Automate' %}</h4>
+                </div>
+                <p>
+                    {% blocktrans %}
+                        No need to remember to close or transition an issue that
+                        you were working on, we will do that automatically.
+                    {% endblocktrans %}
+                </p>
+            </div>
+            <div class="col-md-4 animated fadeIn">
+                <div class="title">
+                    <i class="fa fa-tachometer fa-2x"></i>
+                    <h4>{% trans 'Monitor' %}</h4>
+                </div>
+                <p>
+                    {% blocktrans %}
+                        Get detail overview of commits and builds. See who did what,
+                        when it was reviewed and associated builds.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

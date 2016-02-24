@@ -1,0 +1,81 @@
+{% extends 'app.html' %}
+{% load i18n static compress %}
+
+{% block scripts %}
+    {% if repos == None %}
+        {% compress js inline %}
+            <script>
+                $(function() {
+                    setInterval(function() {
+                        $.get("{% url 'app_import_check' %}").done(function(data) {
+                            if (data) window.location.reload();
+                        });
+                    }, 1500);
+                });
+            </script>
+        {% endcompress %}
+    {% else %}
+        {% compress js %}
+            <script src="{% static 'js/app_import.js' %}"></script>
+        {% endcompress %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div id="import">
+        <form action="{% url 'app_import' %}" method="post">
+            {% csrf_token %}
+            <div class="page-header">
+                <ol class="breadcrumb">
+                  <li><a href="{% url 'app' %}">{% trans 'Repositories' %}</a></li>
+                  <li class="active">{% trans 'Import' %}</li>
+                </ol>
+                {% if repos == None %}
+                    <h3>{% trans 'Loading repositories' %}</h3>
+                {% else %}
+                    <h3 class="pull-left">{% trans 'Import repositories' %}</h3>
+                    <button type="submit" class="btn btn-default pull-right" disabled="disabled">
+                        {% trans 'Add selected' %}
+                    </button>
+                    <div class="clearfix"></div>
+                {% endif %}
+            </div>
+            {% if repos == None %}
+                <img src="{% static 'img/oval.svg' %}">
+            {% else %}
+                {% for repo in repos %}
+                    {% if forloop.first %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="input-group">
+                                    <input type="text" class="form-control"
+                                        id="filter" placeholder="Filter by name" autocomplete="off" autofocus
+                                    >
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                </div>
+                            </div>
+                            <ul class="list-group">
+                    {% endif %}
+                    <li class="list-group-item">
+                         <input type="checkbox" name="repos_selected" id="repo_{{ forloop.counter }}" value="{{ repo.full_name }}">
+                         <label for="repo_{{ forloop.counter }}">{{ repo.full_name }}</label>
+                         <a href="{{ repo.html_url }}" target="_blank" tabindex="-1">
+                            <i class="fa fa-external-link"></i>
+                        </a>
+                         {% if repo.description %}
+                            <p class="description">{{ repo.description }}</p>
+                        {% endif %}
+                    </li>
+                    {% if forloop.last %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <div class="alert alert-warning dont-hide" role="alert">
+                        {% trans 'You have no available repositories. Please try creating one.' %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

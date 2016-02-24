@@ -1,0 +1,35 @@
+{% extends 'app.html' %}
+{% load i18n static %}
+
+{% block content %}
+    <div id="home">
+        <div class="page-header">
+            <h3 class="pull-left">{% trans 'Linked repositories' %}</h3>
+            <button onclick="window.location='{% url 'app_import' %}'" class="btn btn-default pull-right">
+                <i class="fa fa-github"></i> {% trans 'Import from GitHub' %}
+            </button>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel panel-default">
+            {% for repo in repos %}
+                <a href="{% url 'app_detail' repo.slug %}">
+                    <div class="media">
+                        <div class="media-left">
+                            <i class="fa fa-code-fork fa-2x"></i>
+                        </div>
+                        <div class="media-body">
+                            <div class="pull-left">
+                                <h4 class="media-heading" id="top-aligned-media">{{ repo.full_name }}</h4>
+                                <p class="description">{{ repo.description }}</p>
+                            </div>
+                            <div class="info pull-right">
+                                <span>Updated:</span>
+                                <span class="datetime">{{ repo.updated_at }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'app.html' %}
+{% load i18n static %}
+
+{% block content %}
+    <div id="addons">
+        <div class="page-header">
+            <h3 class="pull-left">{% trans 'Chrome extension' %}</h3>
+            <button onclick="window.location='{% url 'app_import' %}'" class="btn btn-default pull-right">
+                <i class="fa fa-download"></i> {% trans 'Download' %}
+            </button>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel panel-default well">
+            <p>
+                {% blocktrans %}
+                    Download our Chrome extension to fully experience your configured integrations.
+                    When started you will have to provide your authenticaton token. All communication is
+                    done through SSL connection so it's absolutely secured and you can share it
+                    with your teams. Please note that Token is NOT used for authenticate agains our administration.
+                {% endblocktrans %}
+            </p>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">{% trans 'Authentication token' %}</label>
+                    <input type="text" class="form-control" value="{{ request.user.auth_token.key }}"
+                        onClick="this.setSelectionRange(0, this.value.length)"
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

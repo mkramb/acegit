@@ -1,0 +1,10 @@
+*.pyc
+.DS_Store
+.project
+.settings
+.pydevproject
+.anaconda
+bower_components
+node_modules
+static/CACHE
+settings_local.py
